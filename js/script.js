@@ -14,6 +14,9 @@ const stopBtn = document.querySelector('.stop-btn');
 // grab the .reset-btn
 const resetBtn = document.querySelector('.reset-btn');
 
+// Recoger mensaje de alerta
+const message = document.querySelector('.message');
+
 
 // Recoger la tabla de la página
 const table = document.querySelector('.table');
@@ -31,6 +34,28 @@ let hideImg = document.querySelector('.hide-btn-img');
 //Recoger div de tabla
 let tableDiv = document.querySelector('.columns');
 
+/* grab necessary elements ends */ 
+
+/* global variables and constants */
+
+// variable to store setInterval
+let countDownInterval;
+
+// secondsLeft in seconds
+let secondsLeft;
+
+// secondsLeft in millisecond
+let secondsLeftms;
+// end time
+let endTime;
+// .stop-btn clicked or not
+let stopBtnClicked = false;
+/* global variables ends */
+
+
+/* AGREGANDO NUEVOS MÉTODOS */
+
+
 hideBtn.addEventListener('click', (event) => {
   event.preventDefault();
   if(tableDiv.style.display === "none"){
@@ -45,7 +70,8 @@ hideBtn.addEventListener('click', (event) => {
     return;
   }
   else{
-    //Cambier display a none
+    message.style.opacity = "0";
+    //Cambiar display a none
     tableDiv.setAttribute('style', 'display: none');
     //Cambiar imagen de botón
     hideImg.src = "./imgs/hide.png";
@@ -56,21 +82,8 @@ hideBtn.addEventListener('click', (event) => {
 });
 
 
-/* grab necessary elements ends */ 
 
-/* global variables and constants */
-// variable to store setInterval
-let countDownInterval;
 
-// secondsLeft in millisecond
-let secondsLeftms;
-// end time
-let endTime;
-// .stop-btn clicked or not
-let stopBtnClicked = false;
-/* global variables ends */
-
-/* AGREGANDO NUEVOS MÉTODOS */
 timeInput.addEventListener('input', () => {
   let hours = Math.floor(timeInput.value / 60);
   let minutes = timeInput.value % 60;
@@ -83,24 +96,30 @@ timeInput.addEventListener('input', () => {
 });
 
 document.querySelectorAll('a[row-num]').forEach(link => {
-  link.addEventListener('click', (event) => {
-    event.preventDefault();
-    let row = link.getAttribute('row-num');
-    let minute = table.rows[row].cells[1].innerHTML;
-    let countDown = document.querySelector('.countdown');
-    for(let i = 1; i < table.rows.length; i++) {
-      table.rows[i].style.backgroundColor = "darkgray";
-    }
-    if(minute < 10) {
-
-      countDown.innerHTML = "00:0" + minute + ":00";
-    }
-    else{
-      countDown.innerHTML = "00:" + minute + ":00";
-    }
-    table.rows[row].style.backgroundColor = "black";
-    timeInput.value = minute;
-  });
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      if(secondsLeft !== 0){
+        console.log(secondsLeft);
+        alert("no puedes cambiarlo mientras el contador está corriendo");
+      }
+      else{
+        let row = link.getAttribute('row-num');
+        let minute = table.rows[row].cells[1].innerHTML;
+        let countDown = document.querySelector('.countdown');
+        for(let i = 1; i < table.rows.length; i++) {
+          table.rows[i].style.backgroundColor = "darkgray";
+        }
+        if(minute < 10) {
+          
+          countDown.innerHTML = "00:0" + minute + ":00";
+        }
+        else{
+          countDown.innerHTML = "00:" + minute + ":00";
+        }
+        table.rows[row].style.backgroundColor = "black";
+        timeInput.value = minute;
+      }
+    });
 });
 
 /* .stop-btn click listener */
@@ -178,6 +197,11 @@ form.addEventListener('submit', (event) => {
     setBtn.disabled = true;
     // then enable the .stop-btn
     stopBtn.disabled = false;
+    // show message
+    message.style.opacity = "0.5";
+    setTimeout(() => {
+      message.style.opacity = "0";
+    }, 7000);
   }
 
 });
@@ -189,7 +213,7 @@ const setCountDown = (endTime) => {
   // calculate how many milliseconds is left to reach endTime from now
   secondsLeftms = endTime - Date.now();
   // convert it to seconds
-  const secondsLeft = Math.round(secondsLeftms / 1000);
+  secondsLeft = Math.round(secondsLeftms / 1000);
 
   // calculate the hours, minutes and seconds
   let hours = Math.floor(secondsLeft / 3600);
@@ -267,6 +291,7 @@ const setCountDown = (endTime) => {
 const resetCountDown = () => {
   // destroy the setInterval()
   clearInterval(countDownInterval);
+  secondsLeft = 0;
   // reset the countdown text
   countDown.innerHTML = '00 : 00 : 00';
   // set stopBtnClicked = false
@@ -282,5 +307,6 @@ const resetCountDown = () => {
   resetBtn.disabled = true;
   resetBtn.setAttribute('style', 'opacity: 0.5');
   stopBtn.setAttribute('style', 'opacity: 0.5');
+
 };
 /* resetCountDown function ends */

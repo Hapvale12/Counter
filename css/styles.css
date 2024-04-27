@@ -115,3 +115,20 @@ select[name='format'] {
   font-size: large;
   background-color: white;
 }
+/* Hide button styles end */
+
+/* Message */
+.message {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: rgb(148, 148, 148);
+  border-radius: 0.25rem;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.1s ease-in;
+  transition: opacity 1s ease-out;
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
