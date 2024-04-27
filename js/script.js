@@ -41,8 +41,8 @@ let tableDiv = document.querySelector('.columns');
 // variable to store setInterval
 let countDownInterval;
 
-// secondsLeft in seconds
-let secondsLeft;
+// secondsLeft in seconds / starts from 0
+let secondsLeft = 0;
 
 // secondsLeft in millisecond
 let secondsLeftms;
