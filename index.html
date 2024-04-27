@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="css/styles.css"/>
+  <title>Cronometro</title>
+</head>
+<body>
+  <div class="columns">
+  <table class="table" style="background-color: darkgray;">
+    <tr>
+      <th>Tema / Asignación</th>
+      <th>Min.</th>
+      <th>Accion</th>
+    </tr>
+    <tr>
+      <td contenteditable="true">Palabras de Introducción</td>
+      <td contenteditable="true">1</td>
+      <td>
+        <a href="" style="font-size: small;" row-num="1">
+          <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td contenteditable="true">Discurso de Tesoros de la Biblia</td>
+      <td contenteditable="true">10</td>
+      <td>
+        <a href="" style="font-size: small;" row-num="2">
+          <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td contenteditable="true">Busquemos Perlas Escondidas</td>
+      <td contenteditable="true">10</td>
+      <td>
+        <a href="" style="font-size: small;" row-num="3">
+          <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td contenteditable="true">Lectura de la Biblia</td>
+      <td contenteditable="true">4</td>
+      <td>
+        <a href="" style="font-size: small;" row-num="4">
+          <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td contenteditable="true">Asignacion 1</td>
+      <td contenteditable="true">0</td>
+      <td>
+        <a href="" style="font-size: small;" row-num="5">
+          <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td contenteditable="true">Asignacion 2</td>
+      <td contenteditable="true">0</td>
+      <td>
+        <a href="" style="font-size: small;" row-num="6">
+          <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td contenteditable="true">Asignacion 3</td>
+      <td contenteditable="true">0</td>
+      <td>
+        <a href="" style="font-size: small;" row-num="7">
+          <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">Nuestra Vida Cristiana</td>
+    </tr>
+    <tr>
+      <td contenteditable="true">Parte 1</td>
+      <td contenteditable="true">15</td>
+      <td>
+        <a href="" style="font-size: small;" row-num="9">
+          <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td contenteditable="true">Parte 2</td>
+      <td contenteditable="true">0</td>
+      <td>
+        <a href="" style="font-size: small;" row-num="10">
+          <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td contenteditable="true">Estudio Bíblico de Congregación</td>
+      <td contenteditable="true">30</td>
+      <td>
+        <a href="" style="font-size: small;" row-num="11">
+          <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td contenteditable="true">Palabras de Conclusión</td>
+      <td contenteditable="true">3</td>
+      <td>
+        <a href="" style="font-size: small;" row-num="12">
+          <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+        </a>
+      </td>
+    </tr>
+  </table>
+  </div>
+  <div class="counter">
+    <!-- form -->
+    <form class="form">
+      <!-- countdown time input field -->
+      <input type="number" min="1" class="time-input" placeholder="Ingrese tiempo">
+      <!-- options -->
+      <select name="format" class="min-sec" disabled>
+        <option value="minutes">Minutos</option>
+      </select>
+      <!-- submit button or set button -->
+      <button type="submit" class="set-btn">Iniciar</button>
+    </form>
+    <!-- countdown text -->
+    <p class="countdown">00 : 01 : 00</p>
+    <!-- buttons -->
+    <div class="buttons">
+      <button class="stop-btn" disabled style="opacity: 0.5;">Detener</button>
+      <button class="reset-btn" disabled style="opacity: 0.5;">Reiniciar</button>
+    </div>
+  </div>
+  <!-- botón flotante de ocultar / hide -->
+  <a class="hide-btn" href=""><img src="./imgs/view.png" class="hide-btn-img"></a>
+  <!-- script -->
+  <script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>
