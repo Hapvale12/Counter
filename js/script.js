@@ -39,7 +39,9 @@ hideBtn.addEventListener('click', (event) => {
     //Cambiar imagen de botón
     hideImg.src = "./imgs/view.png";
     // Cambiar display de body
-    document.querySelector('body').setAttribute('style', 'justify-content: left');
+    document.querySelector('body').setAttribute('style', 'justify-content: left;');
+    
+  
     return;
   }
   else{
@@ -206,7 +208,7 @@ const setCountDown = (endTime) => {
   }
 
   // stopping the timer if the time is up and reset the countdown
-  if (secondsLeft == 58) { // secondsLeft === 0
+  if (secondsLeft === 0) {
     resetCountDown();
     
     // Recorrer la tabla y buscar la que tiene el background negro
