@@ -156,7 +156,6 @@ stopBtn.addEventListener('click', () => {
       setCountDown(endTime);
     }, 0);
   }
-
 });
 /* .stop-btn click listener ends */
 
@@ -233,6 +232,8 @@ const setCountDown = (endTime) => {
 
   // stopping the timer if the time is up and reset the countdown
   if (secondsLeft === 0) {
+    
+    /* Reiniciar el contador */
     resetCountDown();
     
     // Recorrer la tabla y buscar la que tiene el background negro
