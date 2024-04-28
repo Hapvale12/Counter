@@ -61,6 +61,7 @@ hideBtn.addEventListener('click', (event) => {
     // Cambiar display de body
     document.querySelector('body').setAttribute('style', 'justify-content: left;');
     document.querySelector('.countdown').setAttribute('style', 'font-size: 7.5rem;');
+    document.querySelector('.counter').setAttribute('style', 'width:65%;');
     return;
   }
   else{
