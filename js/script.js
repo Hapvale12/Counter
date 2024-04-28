@@ -14,18 +14,26 @@ const stopBtn = document.querySelector('.stop-btn');
 // grab the .reset-btn
 const resetBtn = document.querySelector('.reset-btn');
 
+// Recoger the body
+const body = document.querySelector('body');
+
 // Recoger mensaje de alerta
 const message = document.querySelector('.message');
-
 
 // Recoger la tabla de la página
 const table = document.querySelector('.table');
 
+// Recoger la fila 1 de la tabla
 table.rows[1].style.backgroundColor = "black";
 
+// Recoger el valor de la celda 1 de la fila 1
 let minutes = table.rows[1].cells[1];
 
+// Recoger el valor de la celda 2 de la fila 1
 timeInput.value = minutes.innerHTML;
+
+// Estado del cronometro
+let running = false;
 
 // Recoger botón de hide/esconder columnas
 let hideBtn = document.querySelector('.hide-btn');
@@ -41,8 +49,6 @@ let tableDiv = document.querySelector('.columns');
 // variable to store setInterval
 let countDownInterval;
 
-// secondsLeft in seconds / starts from 0
-let secondsLeft = 0;
 
 // secondsLeft in millisecond
 let secondsLeftms;
@@ -55,8 +61,8 @@ let stopBtnClicked = false;
 
 /* AGREGANDO NUEVOS MÉTODOS */
 
-
 hideBtn.addEventListener('click', (event) => {
+  // Prevenir que se recargue la página
   event.preventDefault();
   if(tableDiv.style.display === "none"){
     //Cambier display a flex
@@ -65,11 +71,10 @@ hideBtn.addEventListener('click', (event) => {
     hideImg.src = "./imgs/view.png";
     // Cambiar display de body
     document.querySelector('body').setAttribute('style', 'justify-content: left;');
-    
-  
     return;
   }
   else{
+    //Cambiar opacity de mensaje
     message.style.opacity = "0";
     //Cambiar display a none
     tableDiv.setAttribute('style', 'display: none');
@@ -98,9 +103,8 @@ timeInput.addEventListener('input', () => {
 document.querySelectorAll('a[row-num]').forEach(link => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
-      if(secondsLeft !== 0){
-        console.log(secondsLeft);
-        alert("no puedes cambiarlo mientras el contador está corriendo");
+      if(running === true){
+        alert("Debes detener el cronometro antes de cambiar el tiempo.");
       }
       else{
         let row = link.getAttribute('row-num');
@@ -142,9 +146,11 @@ stopBtn.addEventListener('click', () => {
     resetBtn.disabled = false;
     // clear the setInterval() inorder to freeze the countdown timer
     clearInterval(countDownInterval);
-
-  } else if (stopBtnClicked === false) {
-    // if Continuar button is clicked
+    // calculate how many milliseconds is left to reach endTime from now
+    secondsLeftms = endTime - Date.now();
+  } 
+  // if Continuar button is clicked
+  else if (stopBtnClicked === false) {
     // then change text to 'Detener'
     stopBtn.innerHTML = 'Detener';
     // disable the .reset-btn
@@ -159,39 +165,38 @@ stopBtn.addEventListener('click', () => {
 });
 /* .stop-btn click listener ends */
 
-
 /* .reset-btn click listener */
 resetBtn.addEventListener('click', () => {
   resetCountDown();
+  running = false;
+  /* Resetear valores */ 
+  body.style.backgroundColor = "black";
+  stopBtn.setAttribute('style', 'opacity: 0.5');
+  resetBtn.setAttribute('style', 'opacity: 0.5');
 });
 /* .reset-btn click listener ends */
-
 
 /* .form submit listener */
 form.addEventListener('submit', (event) => {
   // prevent the default page reloading
   event.preventDefault();
-
+  // Cambiar estado del cronometro
+  running = true;
   // get the countdown time user typed
   let countDownTime = timeInput.value;
-
   // check if it is not zero
   if (countDownTime > 0) {
     // check which is the format, ie the <select> element's value
       countDownTime = countDownTime * 60000;
-
     // get current time in milliseconds
     const now = Date.now();
     // calculate the ending time
     endTime = now + countDownTime;
-
     // activate the countdown at first
     setCountDown(endTime);
-
     countDownInterval = setInterval(() => {
       setCountDown(endTime);
-    }, 1000);
-
+    }, 10);
     // then disable the .set-btn
     setBtn.disabled = true;
     // then enable the .stop-btn
@@ -200,24 +205,23 @@ form.addEventListener('submit', (event) => {
     message.style.opacity = "0.5";
     setTimeout(() => {
       message.style.opacity = "0";
-    }, 7000);
+    }, 6500); 
   }
 
 });
 /* .form submit listener ends */
 
-
 /* setCountDown function */
 const setCountDown = (endTime) => {
   // calculate how many milliseconds is left to reach endTime from now
-  secondsLeftms = endTime - Date.now();
+  let secondsLeftms = endTime - Date.now();
   // convert it to seconds
-  secondsLeft = Math.round(secondsLeftms / 1000);
+  let secondsLeft = Math.round(secondsLeftms / 1000);
 
   // calculate the hours, minutes and seconds
-  let hours = Math.floor(secondsLeft / 3600);
-  let minutes = Math.floor(secondsLeft / 60) - (hours * 60);
-  let seconds = secondsLeft % 60;
+  let hours = Math.floor(Math.abs(secondsLeft) / 3600);
+  let minutes = Math.floor(Math.abs(secondsLeft) / 60) - (hours * 60);
+  let seconds = Math.abs(secondsLeft) % 60;
 
   // adding an extra zero infront of digits if it is < 10
   if (hours < 10) {
@@ -230,60 +234,21 @@ const setCountDown = (endTime) => {
     seconds = `0${seconds}`;
   }
 
-  // stopping the timer if the time is up and reset the countdown
-  if (secondsLeft === 0) {
-    
-    /* Reiniciar el contador */
-    resetCountDown();
-    
-    // Recorrer la tabla y buscar la que tiene el background negro
-
-    for(let i = 1; i < table.rows.length; i++) {
-      if(table.rows[i].style.backgroundColor === "black"){
-        let nxtRow = i + 1;
-
-        let countDown = document.querySelector('.countdown');
-        for(let i = 1; i < table.rows.length; i++) {
-          table.rows[i].style.backgroundColor = "darkgray";
-        }
-        if(nxtRow === 8){
-          nxtRow = nxtRow + 1;
-        }
-        console.log(nxtRow)
-        table.rows[nxtRow].style.backgroundColor = "black";
-
-        let minute = table.rows[nxtRow].cells[1].innerHTML;
-        if(minute < 10) {
-
-          countDown.innerHTML = "00:0" + minute + ":00";
-        }
-        else{
-          countDown.innerHTML = "00:" + minute + ":00";
-        }
-        timeInput.value = minute;
-        i = 13;
-        table.rows[nxtRow].style.backgroundColor = "black";
-      }
-
-    }
-
-    /* CAMBIANDO VALORES */
-    form.setAttribute('style', 'display: block');
-    resetBtn.setAttribute('style', 'opacity: 1');
-    stopBtn.setAttribute('style', 'opacity: 1');
-
-    return;
-  }
-
   // set the .countdown text
-  countDown.innerHTML = `${hours} : ${minutes} : ${seconds}`;
-
-  // Agregando cambios de estilos en HTML
-  form.setAttribute('style', 'display: none');
-  resetBtn.setAttribute('style', 'opacity: 0.5');
-  stopBtn.setAttribute('style', 'opacity: 0.5');
-
-
+  let timeString = `${hours} : ${minutes} : ${seconds}`;
+  if (secondsLeft < 0) {
+    timeString = "-" + timeString;
+    body.style.backgroundColor = "red";
+    stopBtn.setAttribute('style', 'opacity: 1');
+    resetBtn.setAttribute('style', 'opacity: 1');
+  }
+  else{
+    // Agregando cambios de estilos 
+    form.setAttribute('style', 'display: none');
+    resetBtn.setAttribute('style', 'opacity: 0.5');
+    stopBtn.setAttribute('style', 'opacity: 0.5');
+  }
+  countDown.innerHTML = timeString;
 };
 /* setCountDown function ends */
 
