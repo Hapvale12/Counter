@@ -12,7 +12,7 @@
 body {
   width: 100vw;
   height: 100vh;
-  background-color: #000000;
+  background-color: black;
   overflow: hidden;
   display: flex;
   justify-content: left;
@@ -105,7 +105,7 @@ select[name='format'] {
 /* Hide button */
 .hide-btn {
   position: fixed;
-  left: 2rem;
+  left: 1.75rem;
   top: 0.75rem;
   padding: 0.25rem;
   height: 1rem;
@@ -116,6 +116,8 @@ select[name='format'] {
   background-color: white;
 }
 /* Hide button styles end */
+
+
 
 /* Message */
 .message {

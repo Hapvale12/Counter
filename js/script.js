@@ -13,28 +13,22 @@ const countDown = document.querySelector('.countdown');
 const stopBtn = document.querySelector('.stop-btn');
 // grab the .reset-btn
 const resetBtn = document.querySelector('.reset-btn');
+/* grab necessary elements ends */ 
 
 // Recoger the body
 const body = document.querySelector('body');
-
 // Recoger mensaje de alerta
 const message = document.querySelector('.message');
-
 // Recoger la tabla de la página
 const table = document.querySelector('.table');
-
 // Recoger la fila 1 de la tabla
 table.rows[1].style.backgroundColor = "black";
-
 // Recoger el valor de la celda 1 de la fila 1
 let minutes = table.rows[1].cells[1];
-
 // Recoger el valor de la celda 2 de la fila 1
 timeInput.value = minutes.innerHTML;
-
 // Estado del cronometro
 let running = false;
-
 // Recoger botón de hide/esconder columnas
 let hideBtn = document.querySelector('.hide-btn');
 //Recoger imagen de botón
@@ -42,14 +36,10 @@ let hideImg = document.querySelector('.hide-btn-img');
 //Recoger div de tabla
 let tableDiv = document.querySelector('.columns');
 
-/* grab necessary elements ends */ 
 
 /* global variables and constants */
-
 // variable to store setInterval
 let countDownInterval;
-
-
 // secondsLeft in millisecond
 let secondsLeftms;
 // end time
@@ -60,7 +50,6 @@ let stopBtnClicked = false;
 
 
 /* AGREGANDO NUEVOS MÉTODOS */
-
 hideBtn.addEventListener('click', (event) => {
   // Prevenir que se recargue la página
   event.preventDefault();
@@ -71,6 +60,7 @@ hideBtn.addEventListener('click', (event) => {
     hideImg.src = "./imgs/view.png";
     // Cambiar display de body
     document.querySelector('body').setAttribute('style', 'justify-content: left;');
+    document.querySelector('.countdown').setAttribute('style', 'font-size: 7.5rem;');
     return;
   }
   else{
@@ -82,12 +72,11 @@ hideBtn.addEventListener('click', (event) => {
     hideImg.src = "./imgs/hide.png";
     // Cambiar display de body
     document.querySelector('body').setAttribute('style', 'justify-content: center');
+    document.querySelector('.countdown').setAttribute('style', 'font-size: 11rem;');
+    document.querySelector('.counter').setAttribute('style', 'width:100%;');
     return;
   }
 });
-
-
-
 
 timeInput.addEventListener('input', () => {
   let hours = Math.floor(timeInput.value / 60);
@@ -241,6 +230,7 @@ const setCountDown = (endTime) => {
     body.style.backgroundColor = "red";
     stopBtn.setAttribute('style', 'opacity: 1');
     resetBtn.setAttribute('style', 'opacity: 1');
+    resetBtn.innerHTML = "Finalizar";
   }
   else{
     // Agregando cambios de estilos 
@@ -274,5 +264,82 @@ const resetCountDown = () => {
   resetBtn.setAttribute('style', 'opacity: 0.5');
   stopBtn.setAttribute('style', 'opacity: 0.5');
 
+   // Recorrer la tabla y buscar la que tiene el background negro
+   for(let i = 1; i < table.rows.length; i++) {
+    if(table.rows[i].style.backgroundColor === "black"){
+      let nxtRow = i + 1;
+
+      let countDown = document.querySelector('.countdown');
+      for(let i = 1; i < table.rows.length; i++) {
+        table.rows[i].style.backgroundColor = "darkgray";
+      }
+      if(nxtRow === 8){
+        nxtRow = nxtRow + 1;
+      }
+      console.log(nxtRow)
+      table.rows[nxtRow].style.backgroundColor = "black";
+
+      let minute = table.rows[nxtRow].cells[1].innerHTML;
+      if(minute < 10) {
+
+        countDown.innerHTML = "00:0" + minute + ":00";
+      }
+      else{
+        countDown.innerHTML = "00:" + minute + ":00";
+      }
+      timeInput.value = minute;
+      i = 13;
+      table.rows[nxtRow].style.backgroundColor = "black";
+    }
+  }
+    /* CAMBIANDO VALORES */
+    form.setAttribute('style', 'display: block');
+    resetBtn.setAttribute('style', 'opacity: 1');
+    stopBtn.setAttribute('style', 'opacity: 1');
+    return;
 };
 /* resetCountDown function ends */
+
+
+
+//Código a implementar (Cambio de tema)
+/* themeBtn.addEventListener('click', (event) => {
+  // Prevenir que se recargue la página
+  event.preventDefault();
+  console.log(body.style.backgroundColor);
+  if(body.style.backgroundColor === "black"){
+    //Cambier display a flex
+    body.style.backgroundColor = "white";
+    countDown.style.color = "black";
+    return;
+  }
+  else{
+    //Cambiar opacity de mensaje
+    body.style.backgroundColor = "black";
+    countDown.style.color = "white";
+    document.querySelector('.min-sec').setAttribute('style', 'border: 2px solid black;');
+    return;
+  }
+}); */
+
+// HTML
+/* 
+<!-- botón flotante de day / night -->
+<a class="theme-btn" href=""><img src="./imgs/sun.png" class="theme-btn-img"></a> 
+*/
+
+// CSS
+/* 
+.theme-btn {
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  padding: 0.25rem;
+  height: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  font-size: large;
+  background-color: white;
+}
+*/
