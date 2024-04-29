@@ -22,9 +22,9 @@ const message = document.querySelector('.message');
 // Recoger la tabla de la página
 const table = document.querySelector('.table');
 // Recoger la fila 1 de la tabla
-table.rows[1].style.backgroundColor = "black";
+table.rows[2].style.backgroundColor = "black";
 // Recoger el valor de la celda 1 de la fila 1
-let minutes = table.rows[1].cells[1];
+let minutes = table.rows[2].cells[1];
 // Recoger el valor de la celda 2 de la fila 1
 timeInput.value = minutes.innerHTML;
 // Estado del cronometro
@@ -97,7 +97,8 @@ document.querySelectorAll('a[row-num]').forEach(link => {
         alert("Debes detener el cronometro antes de cambiar el tiempo.");
       }
       else{
-        let row = link.getAttribute('row-num');
+        let row = parseInt(link.getAttribute('row-num'));
+        row = row + 1;
         let minute = table.rows[row].cells[1].innerHTML;
         let countDown = document.querySelector('.countdown');
         for(let i = 1; i < table.rows.length; i++) {
@@ -112,6 +113,7 @@ document.querySelectorAll('a[row-num]').forEach(link => {
         }
         table.rows[row].style.backgroundColor = "black";
         timeInput.value = minute;
+        console.log(row);
       }
     });
 });
@@ -269,17 +271,19 @@ const resetCountDown = () => {
    for(let i = 1; i < table.rows.length; i++) {
     if(table.rows[i].style.backgroundColor === "black"){
       let nxtRow = i + 1;
-
       let countDown = document.querySelector('.countdown');
-      for(let i = 1; i < table.rows.length; i++) {
-        table.rows[i].style.backgroundColor = "darkgray";
+      for(let i = 1; i < 18; i++) {
+        if(table.rows[i].style.backgroundColor = "black"){
+          table.rows[i].style.backgroundColor = "darkgray"
+        }
       }
-      if(nxtRow === 8){
+      console.log(table.rows.length)
+      i = 17;
+      if(nxtRow === 9 || nxtRow === 14){
         nxtRow = nxtRow + 1;
       }
       console.log(nxtRow)
       table.rows[nxtRow].style.backgroundColor = "black";
-
       let minute = table.rows[nxtRow].cells[1].innerHTML;
       if(minute < 10) {
 
@@ -289,7 +293,6 @@ const resetCountDown = () => {
         countDown.innerHTML = "00:" + minute + ":00";
       }
       timeInput.value = minute;
-      i = 13;
       table.rows[nxtRow].style.backgroundColor = "black";
     }
   }
