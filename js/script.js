@@ -21,6 +21,8 @@ const body = document.querySelector('body');
 const message = document.querySelector('.message');
 // Recoger la tabla de la página
 const table = document.querySelector('.table');
+// Recoger el interruptor
+const toggleSwitch = document.getElementById('toggleSwitch');
 // Recoger la fila 1 de la tabla
 table.rows[2].style.backgroundColor = "black";
 // Recoger el valor de la celda 1 de la fila 1
@@ -89,8 +91,8 @@ timeInput.addEventListener('input', () => {
     table.rows[i].style.backgroundColor = "darkgray";
   }
 });
-
-document.querySelectorAll('a[row-num]').forEach(link => {
+function assignEventHandlers(){
+  document.querySelectorAll('a[row-num]').forEach(link => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
       if(running === true){
@@ -105,7 +107,6 @@ document.querySelectorAll('a[row-num]').forEach(link => {
           table.rows[i].style.backgroundColor = "darkgray";
         }
         if(minute < 10) {
-          
           countDown.innerHTML = "00:0" + minute + ":00";
         }
         else{
@@ -113,10 +114,11 @@ document.querySelectorAll('a[row-num]').forEach(link => {
         }
         table.rows[row].style.backgroundColor = "black";
         timeInput.value = minute;
-        console.log(row);
       }
     });
-});
+  });
+}
+
 
 /* .stop-btn click listener */
 stopBtn.addEventListener('click', () => {
@@ -272,28 +274,43 @@ const resetCountDown = () => {
     if(table.rows[i].style.backgroundColor === "black"){
       let nxtRow = i + 1;
       let countDown = document.querySelector('.countdown');
-      for(let i = 1; i < 18; i++) {
+      for(let i = 1; i < table.rows.length; i++) {
         if(table.rows[i].style.backgroundColor = "black"){
           table.rows[i].style.backgroundColor = "darkgray"
         }
       }
-      console.log(table.rows.length)
-      i = 17;
-      if(nxtRow === 9 || nxtRow === 14){
+      i = 16;
+      if(nxtRow === 9){
         nxtRow = nxtRow + 1;
       }
-      console.log(nxtRow)
-      table.rows[nxtRow].style.backgroundColor = "black";
-      let minute = table.rows[nxtRow].cells[1].innerHTML;
-      if(minute < 10) {
-
-        countDown.innerHTML = "00:0" + minute + ":00";
+      if(!toggleSwitch.checked){
+        if(nxtRow < 14){
+          table.rows[nxtRow].style.backgroundColor = "black";
+          let minute = table.rows[nxtRow].cells[1].innerHTML;
+          if(minute < 10) {
+            countDown.innerHTML = "00:0" + minute + ":00";
+          }
+          else{
+            countDown.innerHTML = "00:" + minute + ":00";
+          }
+          timeInput.value = minute;
+          table.rows[nxtRow].style.backgroundColor = "black";
+        }
       }
-      else{
-        countDown.innerHTML = "00:" + minute + ":00";
+      else if (toggleSwitch.checked){
+        if(nxtRow < 4){
+          table.rows[nxtRow].style.backgroundColor = "black";
+          let minute = table.rows[nxtRow].cells[1].innerHTML;
+          if(minute < 10) {
+            countDown.innerHTML = "00:0" + minute + ":00";
+          }
+          else{
+            countDown.innerHTML = "00:" + minute + ":00";
+          }
+          timeInput.value = minute;
+          table.rows[nxtRow].style.backgroundColor = "black";
+        }
       }
-      timeInput.value = minute;
-      table.rows[nxtRow].style.backgroundColor = "black";
     }
   }
     /* CAMBIANDO VALORES */
@@ -304,6 +321,160 @@ const resetCountDown = () => {
 };
 /* resetCountDown function ends */
 
+const tableContent1 = `
+  <tr>
+    <td colspan="3">Reunión de Entre Semana</td>
+  </tr>
+  <tr>
+    <th>Tema / Asignación</th>
+    <th>Min.</th>
+    <th>Accion</th>
+  </tr>
+  <tr>
+    <td contenteditable="true">Palabras de Introducción</td>
+    <td contenteditable="true">1</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="1">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td contenteditable="true">Discurso de Tesoros de la Biblia</td>
+    <td contenteditable="true">10</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="2">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td contenteditable="true">Busquemos Perlas Escondidas</td>
+    <td contenteditable="true">10</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="3">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td contenteditable="true">Lectura de la Biblia</td>
+    <td contenteditable="true">4</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="4">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td contenteditable="true">Asignacion 1</td>
+    <td contenteditable="true">0</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="5">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td contenteditable="true">Asignacion 2</td>
+    <td contenteditable="true">0</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="6">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td contenteditable="true">Asignacion 3</td>
+    <td contenteditable="true">0</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="7">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">Nuestra Vida Cristiana</td>
+  </tr>
+  <tr>
+    <td contenteditable="true">Parte 1</td>
+    <td contenteditable="true">15</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="9">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td contenteditable="true">Parte 2</td>
+    <td contenteditable="true">0</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="10">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td contenteditable="true">Estudio Bíblico de Congregación</td>
+    <td contenteditable="true">30</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="11">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td contenteditable="true">Palabras de Conclusión</td>
+    <td contenteditable="true">3</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="12">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+`
+const tableContent2 = `
+  <tr>
+  <td colspan="3">Reunión de Fin de Semana</td>
+  </tr>
+  <tr>
+    <th>Tema / Asignación</th>
+    <th>Min.</th>
+    <th>Accion</th>
+  </tr>
+  <tr>
+    <td contenteditable="true">Discurso Público</td>
+    <td contenteditable="true">30</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="1">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td contenteditable="true">Estudio de la Atalaya</td>
+    <td contenteditable="true">60</td>
+    <td>
+      <a href="" style="font-size: small;" row-num="2">
+        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+      </a>
+    </td>
+  </tr>
+`
+
+// agrega un evento de escucha al interruptor
+toggleSwitch.addEventListener('change', function() {
+  // verifica el estado del interruptor
+  if (this.checked) {
+    table.innerHTML = tableContent2;
+    table.rows[2].style.backgroundColor = "black";
+  } else {
+    table.innerHTML = tableContent1;
+    table.rows[2].style.backgroundColor = "black";
+  }
+  assignEventHandlers();
+});
+assignEventHandlers();
 
 
 //Código a implementar (Cambio de tema)
