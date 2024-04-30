@@ -464,11 +464,11 @@ const tableContent2 = `
 
 // agrega un evento de escucha al interruptor
 toggleSwitch.addEventListener('change', function() {
-  // verifica el estado del interruptor
-  if (this.checked) {
+  if(this.checked) {
     table.innerHTML = tableContent2;
     table.rows[2].style.backgroundColor = "black";
-  } else {
+  }
+  else {
     table.innerHTML = tableContent1;
     table.rows[2].style.backgroundColor = "black";
   }
@@ -476,6 +476,27 @@ toggleSwitch.addEventListener('change', function() {
 });
 assignEventHandlers();
 
+
+/* EXPERIMENTO */
+
+let dayOfWeek = new Date().getDay();
+
+function changeTableContent(){
+  if(dayOfWeek === 0 || dayOfWeek === 6){
+    table.innerHTML = tableContent2;
+    table.rows[2].style.backgroundColor = "black";
+    toggleSwitch.checked = true;
+  }
+  else{
+    table.innerHTML = tableContent1;
+    table.rows[2].style.backgroundColor = "black";
+    toggleSwitch.checked = false;
+  }
+  assignEventHandlers();
+}
+changeTableContent();
+
+/* FIN DE EXPERIMENTO */
 
 //Código a implementar (Cambio de tema)
 /* themeBtn.addEventListener('click', (event) => {
