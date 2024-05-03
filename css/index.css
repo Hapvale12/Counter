@@ -187,3 +187,14 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+#share-screen{
+  position : fixed;
+  right: 1rem;
+  top: 1rem;
+  transform: translateX(-1rem, 1rem);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+}

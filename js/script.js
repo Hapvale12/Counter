@@ -37,8 +37,6 @@ let hideBtn = document.querySelector('.hide-btn');
 let hideImg = document.querySelector('.hide-btn-img');
 //Recoger div de tabla
 let tableDiv = document.querySelector('.columns');
-
-
 /* global variables and constants */
 // variable to store setInterval
 let countDownInterval;
@@ -48,7 +46,26 @@ let secondsLeftms;
 let endTime;
 // .stop-btn clicked or not
 let stopBtnClicked = false;
+
 /* global variables ends */
+
+let newWindow = null;
+window.addEventListener('beforeunload', function() {
+  // Si la ventana secundaria está abierta, la cierra
+  if (newWindow && !newWindow.closed) {
+    newWindow.close();
+  }
+});
+// Abre una nueva ventana
+newWindow = window.open('./secondScreen.html', 'Cronómetro', '1');
+// Obtiene el HTML del cronómetro
+let countdownHTML = document.querySelector('.countdown').outerText;
+// Agrega el HTML del cronómetro a la nueva ventana
+
+newWindow.addEventListener('load', function() {
+// Ahora puedes acceder a los elementos de la nueva ventana
+newWindow.document.body.querySelector('.second-counter').innerText = countdownHTML;
+});;
 
 
 /* AGREGANDO NUEVOS MÉTODOS */
@@ -164,7 +181,7 @@ resetBtn.addEventListener('click', () => {
   resetCountDown();
   running = false;
   /* Resetear valores */ 
-  body.style.backgroundColor = "black";
+  newWindow.document.body.style.backgroundColor = "black";
   stopBtn.setAttribute('style', 'opacity: 0.5');
   resetBtn.setAttribute('style', 'opacity: 0.5');
 });
@@ -232,7 +249,7 @@ const setCountDown = (endTime) => {
   let timeString = `${hours} : ${minutes} : ${seconds}`;
   if (secondsLeft < 0) {
     timeString = "-" + timeString;
-    body.style.backgroundColor = "red";
+    newWindow.document.body.style.backgroundColor = "red";
     stopBtn.setAttribute('style', 'opacity: 1');
     resetBtn.setAttribute('style', 'opacity: 1');
     resetBtn.innerHTML = "Finalizar";
@@ -244,6 +261,15 @@ const setCountDown = (endTime) => {
     stopBtn.setAttribute('style', 'opacity: 0.5');
   }
   countDown.innerHTML = timeString;
+  // También actualiza el cronómetro en la nueva ventana, si existe
+  if (newWindow) {
+    // Recoger el texto del segundo cronómetro
+    const secondCounter = newWindow.document.body.querySelector('.second-counter')
+    secondCounter.innerHTML = countDown.outerHTML;
+    secondCounter.style.margin = "0";
+    secondCounter.style.padding = "0";
+
+  }
 };
 /* setCountDown function ends */
 
@@ -254,7 +280,7 @@ const resetCountDown = () => {
   clearInterval(countDownInterval);
   secondsLeft = 0;
   // reset the countdown text
-  countDown.innerHTML = '00 : 00 : 00';
+  countDown.innerHTML = '00:00:00';
   // set stopBtnClicked = false
   stopBtnClicked = false;
   // change inner text to STOP
@@ -317,6 +343,10 @@ const resetCountDown = () => {
     form.setAttribute('style', 'display: block');
     resetBtn.setAttribute('style', 'opacity: 1');
     stopBtn.setAttribute('style', 'opacity: 1');
+    // También actualiza el cronómetro en la nueva ventana, si existe
+    if (newWindow) {
+      newWindow.document.body.querySelector(".second-counter").innerText = countDown.innerText;
+    }
     return;
 };
 /* resetCountDown function ends */
@@ -495,8 +525,8 @@ function changeTableContent(){
   assignEventHandlers();
 }
 changeTableContent();
-
 /* FIN DE EXPERIMENTO */
+
 
 //Código a implementar (Cambio de tema)
 /* themeBtn.addEventListener('click', (event) => {
@@ -539,3 +569,51 @@ changeTableContent();
   background-color: white;
 }
 */
+let isSharing = false;
+let stream;
+
+document.getElementById('share-screen').addEventListener('click', function() {
+  const img = document.querySelector('.share-screen-img');
+  const video = newWindow.document.getElementById('screen-video');
+  const secondCounter = newWindow.document.body.querySelector('.second-counter');
+  const originalStyles = secondCounter.style.cssText;
+
+  console.log(originalStyles)
+  if (!isSharing) {
+    navigator.mediaDevices.getDisplayMedia({
+      video: {
+        width: { ideal: 1920 },
+        height: { ideal: 1080 }
+      }
+    })
+      .then(mediaStream => {
+        this.style = "background-color: green;"
+        stream = mediaStream;
+        isSharing = true;
+        img.src = "./imgs/stop.png";
+        video.srcObject = stream;
+        video.play();
+        video.hidden = false;
+        secondCounter.style = "background-color: gray;position: absolute; top: 0%; left: 0%; transform: translate(-0%, -0%); font-size: 10rem; color: white; margin: 0; padding: 0;";
+        stream.getTracks()[0].addEventListener('ended', () => {
+          secondCounter.style.cssText = originalStyles;
+          video.hidden = true;
+          //Cambiar la imagen del botón
+          img.src = "./imgs/share-screen.png";
+          this.style = "background-color: none;"
+        });
+      })
+      .catch(error => {
+        console.error('Error al acceder a la pantalla', error);
+      });
+  } else {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+    }
+    isSharing = false;
+    video.hidden = true;
+    img.src = "./imgs/share-screen.png";
+    secondCounter.style.cssText = "background-color: none";
+    this.style = "background-color: none;"
+  }
+});

@@ -1,0 +1,23 @@
+
+body{
+    background-color: black;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+    cursor: none;
+}
+.second-counter-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+.second-counter{
+    font-size: 16rem;
+    color: white;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+}
+p{
+    margin: 0;
+}
