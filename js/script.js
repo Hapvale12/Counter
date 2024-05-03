@@ -67,7 +67,6 @@ newWindow.addEventListener('load', function() {
 newWindow.document.body.querySelector('.second-counter').innerText = countdownHTML;
 });;
 
-
 /* AGREGANDO NUEVOS MÉTODOS */
 hideBtn.addEventListener('click', (event) => {
   // Prevenir que se recargue la página
@@ -99,9 +98,9 @@ hideBtn.addEventListener('click', (event) => {
 });
 
 timeInput.addEventListener('input', () => {
-  let hours = Math.floor(timeInput.value / 60);
-  let minutes = timeInput.value % 60;
-  let timeString = (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":00";
+  let minutes = Math.floor(timeInput.value);
+  let seconds = (timeInput.value * 60) % 60;
+  let timeString = (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + Math.floor(seconds);
   let countDown = document.querySelector('.countdown');
   countDown.innerHTML = timeString;
   for (let i = 1; i < table.rows.length; i++) {
@@ -124,10 +123,10 @@ function assignEventHandlers(){
           table.rows[i].style.backgroundColor = "darkgray";
         }
         if(minute < 10) {
-          countDown.innerHTML = "00:0" + minute + ":00";
+          countDown.innerHTML = "0" + minute + ":00";
         }
         else{
-          countDown.innerHTML = "00:" + minute + ":00";
+          countDown.innerHTML = minute + ":00";
         }
         table.rows[row].style.backgroundColor = "black";
         timeInput.value = minute;
@@ -229,15 +228,11 @@ const setCountDown = (endTime) => {
   // convert it to seconds
   let secondsLeft = Math.round(secondsLeftms / 1000);
 
-  // calculate the hours, minutes and seconds
-  let hours = Math.floor(Math.abs(secondsLeft) / 3600);
-  let minutes = Math.floor(Math.abs(secondsLeft) / 60) - (hours * 60);
+  // calculate the minutes and seconds
+  let minutes = Math.floor(Math.abs(secondsLeft) / 60);
   let seconds = Math.abs(secondsLeft) % 60;
 
   // adding an extra zero infront of digits if it is < 10
-  if (hours < 10) {
-    hours = `0${hours}`;
-  }
   if (minutes < 10) {
     minutes = `0${minutes}`;
   }
@@ -246,7 +241,7 @@ const setCountDown = (endTime) => {
   }
 
   // set the .countdown text
-  let timeString = `${hours} : ${minutes} : ${seconds}`;
+  let timeString = `${minutes} : ${seconds}`;
   if (secondsLeft < 0) {
     timeString = "-" + timeString;
     newWindow.document.body.style.backgroundColor = "red";
@@ -268,7 +263,6 @@ const setCountDown = (endTime) => {
     secondCounter.innerHTML = countDown.outerHTML;
     secondCounter.style.margin = "0";
     secondCounter.style.padding = "0";
-
   }
 };
 /* setCountDown function ends */
@@ -280,7 +274,7 @@ const resetCountDown = () => {
   clearInterval(countDownInterval);
   secondsLeft = 0;
   // reset the countdown text
-  countDown.innerHTML = '00:00:00';
+  countDown.innerHTML = '00:00';
   // set stopBtnClicked = false
   stopBtnClicked = false;
   // change inner text to STOP
@@ -314,10 +308,10 @@ const resetCountDown = () => {
           table.rows[nxtRow].style.backgroundColor = "black";
           let minute = table.rows[nxtRow].cells[1].innerHTML;
           if(minute < 10) {
-            countDown.innerHTML = "00:0" + minute + ":00";
+            countDown.innerHTML = "0" + minute + ":00";
           }
           else{
-            countDown.innerHTML = "00:" + minute + ":00";
+            countDown.innerHTML = minute + ":00";
           }
           timeInput.value = minute;
           table.rows[nxtRow].style.backgroundColor = "black";
@@ -328,10 +322,10 @@ const resetCountDown = () => {
           table.rows[nxtRow].style.backgroundColor = "black";
           let minute = table.rows[nxtRow].cells[1].innerHTML;
           if(minute < 10) {
-            countDown.innerHTML = "00:0" + minute + ":00";
+            countDown.innerHTML = "0" + minute + ":00";
           }
           else{
-            countDown.innerHTML = "00:" + minute + ":00";
+            countDown.innerHTML = minute + ":00";
           }
           timeInput.value = minute;
           table.rows[nxtRow].style.backgroundColor = "black";
