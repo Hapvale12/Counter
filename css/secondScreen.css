@@ -15,8 +15,8 @@ body{
 .second-counter{
     font-size: 16rem;
     color: white;
-    padding-inline-start: 0;
-    padding-inline-end: 0;
+    padding: 1rem 3rem;
+    border-radius: 1rem;
 }
 p{
     margin: 0;

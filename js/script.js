@@ -588,7 +588,7 @@ document.getElementById('share-screen').addEventListener('click', function() {
         video.srcObject = stream;
         video.play();
         video.hidden = false;
-        secondCounter.style = "background-color: gray;position: absolute; top: 0%; left: 0%; transform: translate(-0%, -0%); font-size: 10rem; color: white; margin: 0; padding: 0;";
+        secondCounter.style = "background-color: gray;position: absolute; top: 0%; left: 0%; transform: translate(-0%, -0%); font-size: 10rem;";
         stream.getTracks()[0].addEventListener('ended', () => {
           secondCounter.style.cssText = originalStyles;
           video.hidden = true;
