@@ -198,3 +198,12 @@ input:checked + .slider:before {
   display: flex;
   justify-content: center;
 }
+#mini-video{
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  width: 20%;
+  border-radius: 1rem;
+  opacity: 0;
+  border: 2px solid white;
+}

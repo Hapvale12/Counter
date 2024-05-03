@@ -1,23 +1,25 @@
 
+*{
+    box-sizing: border-box;
+}
 body{
     background-color: black;
     font-family: 'Roboto', sans-serif;
-    overflow: hidden;
-    cursor: none;
 }
 .second-counter-container{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    width: 100vw;
+    height: 98vh;
+    width: 98vw;
 }
 .second-counter{
-    font-size: 16rem;
     color: white;
     padding: 1rem 3rem;
     border-radius: 1rem;
+    font-size: 20rem;
 }
 p{
     margin: 0;
+    padding: 1rem 3rem;
 }

@@ -325,7 +325,7 @@ const resetCountDown = () => {
             countDown.innerHTML = "0" + minute + ":00";
           }
           else{
-            countDown.innerHTML = minute + ":00";
+            countDown.innerText = minute + ":00";
           }
           timeInput.value = minute;
           table.rows[nxtRow].style.backgroundColor = "black";
@@ -569,8 +569,10 @@ let stream;
 document.getElementById('share-screen').addEventListener('click', function() {
   const img = document.querySelector('.share-screen-img');
   const video = newWindow.document.getElementById('screen-video');
+  const miniVideo = document.getElementById('mini-video');
   const secondCounter = newWindow.document.body.querySelector('.second-counter');
   const originalStyles = secondCounter.style.cssText;
+
 
   console.log(originalStyles)
   if (!isSharing) {
@@ -588,10 +590,18 @@ document.getElementById('share-screen').addEventListener('click', function() {
         video.srcObject = stream;
         video.play();
         video.hidden = false;
-        secondCounter.style = "background-color: gray;position: absolute; top: 0%; left: 0%; transform: translate(-0%, -0%); font-size: 10rem;";
+
+        miniVideo.srcObject = stream;
+        miniVideo.play();
+        miniVideo.hidden = false;
+        miniVideo.style = "opacity: 1;"
+
+        secondCounter.style = "background-color: gray;position: absolute; top: 0%; left: 0%; transform: translate(-0%, -0%); font-size: 13rem; opacity: 0.95";
         stream.getTracks()[0].addEventListener('ended', () => {
           secondCounter.style.cssText = originalStyles;
           video.hidden = true;
+          miniVideo.hidden = true;
+          miniVideo.style = "opacity: 0;"
           //Cambiar la imagen del botón
           img.src = "./imgs/share-screen.png";
           this.style = "background-color: none;"
@@ -606,6 +616,8 @@ document.getElementById('share-screen').addEventListener('click', function() {
     }
     isSharing = false;
     video.hidden = true;
+    miniVideo.hidden = true;
+    miniVideo.style = "opacity: 0;"
     img.src = "./imgs/share-screen.png";
     secondCounter.style.cssText = "background-color: none";
     this.style = "background-color: none;"
