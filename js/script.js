@@ -23,12 +23,8 @@ const message = document.querySelector('.message');
 const table = document.querySelector('.table');
 // Recoger el interruptor
 const toggleSwitch = document.getElementById('toggleSwitch');
-// Recoger la fila 1 de la tabla
-table.rows[2].style.backgroundColor = "black";
-// Recoger el valor de la celda 1 de la fila 1
-let minutes = table.rows[2].cells[1];
-// Recoger el valor de la celda 2 de la fila 1
-timeInput.value = minutes.innerHTML;
+// // Recoger la fila 1 de la tabla
+// table.rows[2].style.backgroundColor = "black";
 // Estado del cronometro
 let running = false;
 // Recoger botón de hide/esconder columnas
@@ -47,6 +43,13 @@ let endTime;
 // .stop-btn clicked or not
 let stopBtnClicked = false;
 
+// json data meetings
+let data_meeting_json = [];
+// Titulo de la reunión
+const title = document.getElementById('title_meeting');
+// Path del archivo Json con los meetings
+const path_json_data = "./json_data/meetings.json"
+
 /* global variables ends */
 
 let newWindow = null;
@@ -56,6 +59,23 @@ window.addEventListener('beforeunload', function() {
     newWindow.close();
   }
 });
+window.addEventListener('load', async function() {  
+  let data_temp = await fetch(path_json_data)
+  data_meeting_json = await data_temp.json()
+  
+  // Marca el Switch
+  toggleSwitch.checked = true
+  // Crea la tabla usando el Json
+  load_table_meeting(true)
+  // Recoger el valor del primer tiempo del meeting y lo asigna al Time Input
+  const filter_meeting = data_meeting_json.filter( (x) => { return x.sesion == 'ministerio' })
+  timeInput.value = filter_meeting[0].tiempo;  
+
+  // Evento para capturar el click en el Link [a]
+  assignEventHandlers();
+});
+
+
 // Abre una nueva ventana
 newWindow = window.open('./secondScreen.html', 'Cronómetro', '1');
 // Obtiene el HTML del cronómetro
@@ -65,6 +85,7 @@ let countdownHTML = document.querySelector('.countdown').outerText;
 newWindow.addEventListener('load', function() {
 // Ahora puedes acceder a los elementos de la nueva ventana
 newWindow.document.body.querySelector('.second-counter').innerText = countdownHTML;
+
 });;
 
 /* AGREGANDO NUEVOS MÉTODOS */
@@ -345,180 +366,57 @@ const resetCountDown = () => {
 };
 /* resetCountDown function ends */
 
-const tableContent1 = `
-  <tr>
-    <td colspan="3">Reunión de Entre Semana</td>
-  </tr>
-  <tr>
-    <th>Tema / Asignación</th>
-    <th>Min.</th>
-    <th>Accion</th>
-  </tr>
-  <tr>
-    <td contenteditable="true">Palabras de Introducción</td>
-    <td contenteditable="true">1</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="1">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td contenteditable="true">Discurso de Tesoros de la Biblia</td>
-    <td contenteditable="true">10</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="2">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td contenteditable="true">Busquemos Perlas Escondidas</td>
-    <td contenteditable="true">10</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="3">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td contenteditable="true">Lectura de la Biblia</td>
-    <td contenteditable="true">4</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="4">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td contenteditable="true">Asignacion 1</td>
-    <td contenteditable="true">0</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="5">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td contenteditable="true">Asignacion 2</td>
-    <td contenteditable="true">0</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="6">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td contenteditable="true">Asignacion 3</td>
-    <td contenteditable="true">0</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="7">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="3">Nuestra Vida Cristiana</td>
-  </tr>
-  <tr>
-    <td contenteditable="true">Parte 1</td>
-    <td contenteditable="true">15</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="9">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td contenteditable="true">Parte 2</td>
-    <td contenteditable="true">0</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="10">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td contenteditable="true">Estudio Bíblico de Congregación</td>
-    <td contenteditable="true">30</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="11">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td contenteditable="true">Palabras de Conclusión</td>
-    <td contenteditable="true">3</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="12">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-`
-const tableContent2 = `
-  <tr>
-  <td colspan="3">Reunión de Fin de Semana</td>
-  </tr>
-  <tr>
-    <th>Tema / Asignación</th>
-    <th>Min.</th>
-    <th>Accion</th>
-  </tr>
-  <tr>
-    <td contenteditable="true">Discurso Público</td>
-    <td contenteditable="true">30</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="1">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td contenteditable="true">Estudio de la Atalaya</td>
-    <td contenteditable="true">60</td>
-    <td>
-      <a href="" style="font-size: small;" row-num="2">
-        <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
-      </a>
-    </td>
-  </tr>
-`
+
+function addrow(item_row, item_index, haslink=true){
+  let row = table.insertRow(-1); // We are adding at the end 
+  // Create table cells
+  let c1 = row.insertCell(0);
+  let c2 = row.insertCell(1);
+  let c3 = row.insertCell(2);
+
+  // Add data to c1 and c2
+  c1.setAttribute('contenteditable', true)
+  c1.innerHTML = item_row.tema
+  c2.setAttribute('contenteditable', true)
+  c2.innerHTML = item_row.tiempo
+  c3.innerHTML = haslink?`<a href="" style="font-size: small;" row-num="`+(item_index)+`">
+                  <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
+                </a>`:'Acción'
+}
+function load_table_meeting(check_meeeting){
+  table.innerHTML = "";
+  const filter_meeting = data_meeting_json.filter( (x) => { return x.sesion == (check_meeeting?'ministerio':'finde') })
+  addrow({ "tema": "Tema / Asignación", "tiempo": "Min." }, 0, false)
+  filter_meeting.forEach((item_meeting, item_meeting_index) => {
+    addrow(item_meeting, item_meeting_index)
+  });
+  title.innerText = check_meeeting?'Reunión de Entre Semana':'Reunión de Fin de Semana'
+  table.rows[1].style.backgroundColor = "black";
+}
 
 // agrega un evento de escucha al interruptor
 toggleSwitch.addEventListener('change', function() {
-  if(this.checked) {
-    table.innerHTML = tableContent2;
-    table.rows[2].style.backgroundColor = "black";
-  }
-  else {
-    table.innerHTML = tableContent1;
-    table.rows[2].style.backgroundColor = "black";
-  }
+  load_table_meeting(this.checked)
   assignEventHandlers();
 });
-assignEventHandlers();
 
 
 /* EXPERIMENTO */
 
 let dayOfWeek = new Date().getDay();
 
-function changeTableContent(){
-  if(dayOfWeek === 0 || dayOfWeek === 6){
-    table.innerHTML = tableContent2;
-    table.rows[2].style.backgroundColor = "black";
-    toggleSwitch.checked = true;
-  }
-  else{
-    table.innerHTML = tableContent1;
-    table.rows[2].style.backgroundColor = "black";
-    toggleSwitch.checked = false;
-  }
-  assignEventHandlers();
-}
-changeTableContent();
+// function changeTableContent(){
+//   if(dayOfWeek === 0 || dayOfWeek === 6){
+//     table.rows[2].style.backgroundColor = "black";
+//     toggleSwitch.checked = true;
+//   }
+//   else{
+//     table.rows[2].style.backgroundColor = "black";
+//     toggleSwitch.checked = false;
+//   }
+//   assignEventHandlers();
+// }
+// changeTableContent();
 /* FIN DE EXPERIMENTO */
 
 

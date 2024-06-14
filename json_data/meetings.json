@@ -1,0 +1,64 @@
+[
+     {
+          "sesion": "ministerio",
+          "tema": "Palabras de Introducción",
+          "tiempo": 1
+     },
+     {
+          "sesion": "ministerio",
+          "tema": "Discurso de Tesoros de la Biblia",
+          "tiempo": 10
+     },
+     {
+          "sesion": "ministerio",
+          "tema": "Busquemos Perlas Escondidas",
+          "tiempo": 10
+     },
+     {
+          "sesion": "ministerio",
+          "tema": "Lectura de la Biblia",
+          "tiempo": 4
+     },
+     {
+          "sesion": "ministerio",
+          "tema": "Asignacion 1",
+          "tiempo": 0
+     },
+     {
+          "sesion": "ministerio",
+          "tema": "Asignacion 2",
+          "tiempo": 0
+     },
+     {
+          "sesion": "ministerio",
+          "tema": "Asignacion 3",
+          "tiempo": 0
+     },
+     {
+          "sesion": "ministerio",
+          "tema": "Parte 1",
+          "tiempo": 15
+     },
+     {
+          "sesion": "ministerio",
+          "tema": "Parte 2",
+          "tiempo": 0
+     },
+     {
+          "sesion": "ministerio",
+          "tema": "Estudio Bíblico de Congregación",
+          "tiempo": 30
+     },
+     {
+          "sesion": "ministerio",
+          "tema": "Palabras de Conclusión",
+          "tiempo": 3
+     },
+     
+
+     {
+          "sesion": "finde",
+          "tema": "Discurso Público",
+          "tiempo": 30
+     }
+]
