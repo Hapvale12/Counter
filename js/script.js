@@ -49,6 +49,8 @@ let data_meeting_json = [];
 const title = document.getElementById('title_meeting');
 // Path del archivo Json con los meetings
 const path_json_data = "./json_data/meetings.json"
+// Botón para mostrar u ocultar el mensaje
+const show_message = document.getElementById('show_message');
 
 /* global variables ends */
 
@@ -86,8 +88,29 @@ newWindow.addEventListener('load', function() {
 // Ahora puedes acceder a los elementos de la nueva ventana
 newWindow.document.body.querySelector('.second-counter').innerText = countdownHTML;
 
-});;
+});
 
+show_message.addEventListener('click', (event) => {
+  if (newWindow) {
+    // Recoger el texto del segundo cronómetro
+    const message_text_first = document.getElementById('message-text')
+    if(message_text_first.value != ''){
+      // Envía el mensahe a la 2da pantalla
+      const message_text_second = newWindow.document.getElementById('message_text')
+      if(event.target.innerHTML == 'Mostrar'){
+        message_text_second.innerHTML = message_text_first.value;
+        message_text_second.className = 'message-text-show';
+        // Cambia el texto del botón
+        event.target.innerHTML = "Ocultar"
+      }else{
+        event.target.innerHTML = "Mostrar"
+        message_text_first.value = ''
+        message_text_second.innerHTML = ''
+        message_text_second.className = 'message-text-hide';
+      }
+    }
+  }
+})
 /* AGREGANDO NUEVOS MÉTODOS */
 hideBtn.addEventListener('click', (event) => {
   // Prevenir que se recargue la página

@@ -8,9 +8,11 @@ body{
     font-family: 'Roboto', sans-serif;
 }
 .second-counter-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* display: flex; */
+    align-content: center;
+    text-align: center;
+    /* justify-content: center; */
+    /* align-items: center; */
     height: 98vh;
     width: 98vw;
 }
@@ -23,4 +25,39 @@ body{
 p{
     margin: 0;
     padding: 1rem 3rem;
+}
+.message-text-show{
+    display:block;
+    color:white;
+    background-color: red;
+    text-align: center;
+    font-size: 120px;
+    font-weight: 500;
+
+    animation-name: parpadeo;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+    -webkit-animation-name:parpadeo;
+    -webkit-animation-duration: 5s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+}
+@-moz-keyframes parpadeo{  
+    0% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes parpadeo {  
+    0% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@keyframes parpadeo {  
+    0% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+.message-text-hide{
+    display:none;
 }

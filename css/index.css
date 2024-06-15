@@ -34,7 +34,10 @@ table th, table td {
   display: flex;
   align-items: center;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-bar-color) var(--scroll-bar-bg-color);
   justify-content: center;
   border-right: 3px solid gray;
 }
@@ -43,6 +46,10 @@ table th, table td {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-bar-color) var(--scroll-bar-bg-color);
 }
 button {
   padding: 7px 15px;
@@ -58,6 +65,16 @@ button:hover {
 /* common styles end */
 
 /* form */
+
+.message-text {
+  text-transform: uppercase;
+  padding: 10px 7px;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  width: 80%;
+  font-size: xx-large;
+}
 
 .time-input {
   padding: 10px 7px;

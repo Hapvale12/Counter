@@ -22,19 +22,29 @@
     </table>
   </div>
   <div class="counter">
+    
     <!-- form -->
     <form class="form">
-      <!-- countdown time input field --><!---->
-      <input type="number" min="1" class="time-input" placeholder="Ingrese tiempo">
-      <!-- options -->
-      <select name="format" class="min-sec" disabled>
-        <option value="minutes">Minutos</option>
-      </select>
-      <!-- submit button or set button -->
-      <button type="submit" class="set-btn">Iniciar</button>
+      <div>
+        <!-- countdown time input field --><!---->
+        <input type="number" min="1" width="50%" class="time-input" placeholder="Ingrese tiempo">
+        <!-- options -->
+        <select name="format" class="min-sec" disabled>
+          <option value="minutes">Minutos</option>
+        </select>
+        <!-- submit button or set button -->
+        <button type="submit" class="set-btn">Iniciar</button>
+      </div>
+
     </form>
     <!-- countdown text -->
     <p class="countdown">01 : 00</p>
+    <!-- Mensajes a mostrar -->
+    <div>
+      <!-- countdown time input field --><!---->
+      <input id="message-text" type="text" class="message-text" placeholder="Mensaje a mostrar">
+      <button id="show_message" class="set-btn">Mostrar</button>
+    </div>
     <!-- buttons -->
     <div class="buttons">
       <button class="stop-btn" disabled style="opacity: 0.5;">Detener</button>
