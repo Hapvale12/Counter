@@ -60,5 +60,10 @@
           "sesion": "finde",
           "tema": "Discurso Público",
           "tiempo": 30
+     },
+     {
+          "sesion": "finde",
+          "tema": "Estudio de La Atalaya",
+          "tiempo": 60
      }
 ]

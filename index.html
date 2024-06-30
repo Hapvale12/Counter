@@ -7,7 +7,6 @@
   <title>Temporizador</title>
 </head>
 <body>
-  <p class="message">No olvide ocultar el recuadro</p>
   <div class="columns">
     <div class="switch-box">
       <label class="switch">
@@ -16,7 +15,7 @@
       </label>
     </div>
     <div>
-      <h3 id="title_meeting"></h3>
+      <p id="title_meeting"></p>
     </div>
     <table class="table" style="background-color: darkgray;">
     </table>
@@ -25,7 +24,7 @@
     
     <!-- form -->
     <form class="form">
-      <div>
+      <div class="input-container">
         <!-- countdown time input field --><!---->
         <input type="number" min="1" width="50%" class="time-input" placeholder="Ingrese tiempo">
         <!-- options -->
@@ -39,16 +38,16 @@
     </form>
     <!-- countdown text -->
     <p class="countdown">01 : 00</p>
-    <!-- Mensajes a mostrar -->
-    <div>
-      <!-- countdown time input field --><!---->
-      <input id="message-text" type="text" class="message-text" placeholder="Mensaje a mostrar">
-      <button id="show_message" class="set-btn">Mostrar</button>
-    </div>
     <!-- buttons -->
     <div class="buttons">
       <button class="stop-btn" disabled style="opacity: 0.5;">Detener</button>
       <button class="reset-btn" disabled style="opacity: 0.5;">Reiniciar</button>
+    </div>
+    <!-- Mensajes a mostrar -->
+    <div class="message-text-container">
+      <!-- countdown time input field --><!---->
+      <input id="message-text" type="text" class="message-text" placeholder="Mensaje a mostrar">
+      <button id="show_message" class="show-message-btn">Mostrar</button>
     </div>
   </div>
   <!-- botón flotante de ocultar / hide -->

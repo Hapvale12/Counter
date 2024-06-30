@@ -17,8 +17,6 @@ const resetBtn = document.querySelector('.reset-btn');
 
 // Recoger the body
 const body = document.querySelector('body');
-// Recoger mensaje de alerta
-const message = document.querySelector('.message');
 // Recoger la tabla de la página
 const table = document.querySelector('.table');
 // Recoger el interruptor
@@ -51,7 +49,13 @@ const title = document.getElementById('title_meeting');
 const path_json_data = "./json_data/meetings.json"
 // Botón para mostrar u ocultar el mensaje
 const show_message = document.getElementById('show_message');
-
+// Obteniendo el día (de 0 a 6) de la semana
+const day = new Date().getDay();
+// Verificar si el día es entre semana o fin de semana
+let check_meeting_day = (day >= 1 && day <= 5) ? true : false;
+let countdownHTML = '';
+// grab the secondScreenText
+let secondScreenText = "";
 /* global variables ends */
 
 let newWindow = null;
@@ -64,31 +68,33 @@ window.addEventListener('beforeunload', function() {
 window.addEventListener('load', async function() {  
   let data_temp = await fetch(path_json_data)
   data_meeting_json = await data_temp.json()
-  
   // Marca el Switch
-  toggleSwitch.checked = true
+  toggleSwitch.checked = check_meeting_day;
   // Crea la tabla usando el Json
-  load_table_meeting(true)
-  // Recoger el valor del primer tiempo del meeting y lo asigna al Time Input
-  const filter_meeting = data_meeting_json.filter( (x) => { return x.sesion == 'ministerio' })
-  timeInput.value = filter_meeting[0].tiempo;  
-
+  load_table_meeting();
   // Evento para capturar el click en el Link [a]
   assignEventHandlers();
+  
+  const filter_meeting = data_meeting_json.filter((x) => {
+    return x.sesion == (check_meeting_day ? 'ministerio' : 'finde');
+  });
+  timeInput.value = filter_meeting[0].tiempo; 
+  countDown.innerHTML = filter_meeting[0].tiempo + ":00";
+  // Abre una nueva ventana
+  newWindow = window.open('./secondScreen.html', 'Cronómetro', '1');
+  // Obtiene el HTML del cronómetro
+  countdownHTML = document.querySelector('.countdown').outerText;
+  // Agrega el HTML del cronómetro a la nueva ventana
+  newWindow.addEventListener('load', function() {
+  // Ahora puedes acceder a los elementos de la nueva ventana
+  secondScreenText = newWindow.document.body.querySelector('.second-counter');
+  secondScreenText.innerText = countdownHTML;
+  
+  });
+  
 });
 
 
-// Abre una nueva ventana
-newWindow = window.open('./secondScreen.html', 'Cronómetro', '1');
-// Obtiene el HTML del cronómetro
-let countdownHTML = document.querySelector('.countdown').outerText;
-// Agrega el HTML del cronómetro a la nueva ventana
-
-newWindow.addEventListener('load', function() {
-// Ahora puedes acceder a los elementos de la nueva ventana
-newWindow.document.body.querySelector('.second-counter').innerText = countdownHTML;
-
-});
 
 show_message.addEventListener('click', (event) => {
   if (newWindow) {
@@ -127,8 +133,6 @@ hideBtn.addEventListener('click', (event) => {
     return;
   }
   else{
-    //Cambiar opacity de mensaje
-    message.style.opacity = "0";
     //Cambiar display a none
     tableDiv.setAttribute('style', 'display: none');
     //Cambiar imagen de botón
@@ -145,7 +149,6 @@ timeInput.addEventListener('input', () => {
   let minutes = Math.floor(timeInput.value);
   let seconds = (timeInput.value * 60) % 60;
   let timeString = (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + Math.floor(seconds);
-  let countDown = document.querySelector('.countdown');
   countDown.innerHTML = timeString;
   for (let i = 1; i < table.rows.length; i++) {
     table.rows[i].style.backgroundColor = "darkgray";
@@ -162,7 +165,6 @@ function assignEventHandlers(){
         let row = parseInt(link.getAttribute('row-num'));
         row = row + 1;
         let minute = table.rows[row].cells[1].innerHTML;
-        let countDown = document.querySelector('.countdown');
         for(let i = 1; i < table.rows.length; i++) {
           table.rows[i].style.backgroundColor = "darkgray";
         }
@@ -225,6 +227,7 @@ resetBtn.addEventListener('click', () => {
   running = false;
   /* Resetear valores */ 
   newWindow.document.body.style.backgroundColor = "black";
+  countDown.setAttribute('style', 'color: white');
   stopBtn.setAttribute('style', 'opacity: 0.5');
   resetBtn.setAttribute('style', 'opacity: 0.5');
 });
@@ -255,11 +258,6 @@ form.addEventListener('submit', (event) => {
     setBtn.disabled = true;
     // then enable the .stop-btn
     stopBtn.disabled = false;
-    // show message
-    message.style.opacity = "0.5";
-    setTimeout(() => {
-      message.style.opacity = "0";
-    }, 6500); 
   }
 
 });
@@ -289,6 +287,7 @@ const setCountDown = (endTime) => {
   if (secondsLeft < 0) {
     timeString = "-" + timeString;
     newWindow.document.body.style.backgroundColor = "red";
+    countDown.setAttribute('style', 'color: red');
     stopBtn.setAttribute('style', 'opacity: 1');
     resetBtn.setAttribute('style', 'opacity: 1');
     resetBtn.innerHTML = "Finalizar";
@@ -333,48 +332,23 @@ const resetCountDown = () => {
   resetBtn.setAttribute('style', 'opacity: 0.5');
   stopBtn.setAttribute('style', 'opacity: 0.5');
 
-   // Recorrer la tabla y buscar la que tiene el background negro
-   for(let i = 1; i < table.rows.length; i++) {
-    if(table.rows[i].style.backgroundColor === "black"){
+  // Recorrer la tabla y buscar la que tiene el background negro
+  // Recorrer la tabla y buscar la fila que tiene el background negro
+  for (let i = 1; i < table.rows.length; i++) {
+    if (table.rows[i].style.backgroundColor === "black") {
       let nxtRow = i + 1;
-      let countDown = document.querySelector('.countdown');
-      for(let i = 1; i < table.rows.length; i++) {
-        if(table.rows[i].style.backgroundColor = "black"){
-          table.rows[i].style.backgroundColor = "darkgray"
-        }
+      // Cambiar el color de fondo de la fila actual a "darkgray"
+      table.rows[i].style.backgroundColor = "darkgray";
+
+      if (nxtRow < 14) {
+        // Actualizar el color de fondo de la siguiente fila a "black"
+        table.rows[nxtRow].style.backgroundColor = "black";
+        let minute = table.rows[nxtRow].cells[1].innerHTML;
+        // Formatear y mostrar el tiempo
+        countDown.innerHTML = minute < 10 ? "0" + minute + ":00" : minute + ":00";
+        timeInput.value = minute;
       }
-      i = 16;
-      if(nxtRow === 9){
-        nxtRow = nxtRow + 1;
-      }
-      if(!toggleSwitch.checked){
-        if(nxtRow < 14){
-          table.rows[nxtRow].style.backgroundColor = "black";
-          let minute = table.rows[nxtRow].cells[1].innerHTML;
-          if(minute < 10) {
-            countDown.innerHTML = "0" + minute + ":00";
-          }
-          else{
-            countDown.innerHTML = minute + ":00";
-          }
-          timeInput.value = minute;
-          table.rows[nxtRow].style.backgroundColor = "black";
-        }
-      }
-      else if (toggleSwitch.checked){
-        if(nxtRow < 4){
-          table.rows[nxtRow].style.backgroundColor = "black";
-          let minute = table.rows[nxtRow].cells[1].innerHTML;
-          if(minute < 10) {
-            countDown.innerHTML = "0" + minute + ":00";
-          }
-          else{
-            countDown.innerText = minute + ":00";
-          }
-          timeInput.value = minute;
-          table.rows[nxtRow].style.backgroundColor = "black";
-        }
-      }
+      break; // Salir del bucle después de encontrar y procesar la primera fila con fondo negro
     }
   }
     /* CAMBIANDO VALORES */
@@ -406,84 +380,29 @@ function addrow(item_row, item_index, haslink=true){
                   <img src="./imgs/right-arrow.png" alt="" height="20px" width="20px">
                 </a>`:'Acción'
 }
-function load_table_meeting(check_meeeting){
-  table.innerHTML = "";
-  const filter_meeting = data_meeting_json.filter( (x) => { return x.sesion == (check_meeeting?'ministerio':'finde') })
-  addrow({ "tema": "Tema / Asignación", "tiempo": "Min." }, 0, false)
-  filter_meeting.forEach((item_meeting, item_meeting_index) => {
-    addrow(item_meeting, item_meeting_index)
-  });
-  title.innerText = check_meeeting?'Reunión de Entre Semana':'Reunión de Fin de Semana'
-  table.rows[1].style.backgroundColor = "black";
-}
-
-// agrega un evento de escucha al interruptor
+// Asegúrate de que el toggle llame a load_table_meeting con su estado actual como argumento
 toggleSwitch.addEventListener('change', function() {
-  load_table_meeting(this.checked)
+  check_meeting_day = this.checked;
+  load_table_meeting();
   assignEventHandlers();
 });
 
-
-/* EXPERIMENTO */
-
-let dayOfWeek = new Date().getDay();
-
-// function changeTableContent(){
-//   if(dayOfWeek === 0 || dayOfWeek === 6){
-//     table.rows[2].style.backgroundColor = "black";
-//     toggleSwitch.checked = true;
-//   }
-//   else{
-//     table.rows[2].style.backgroundColor = "black";
-//     toggleSwitch.checked = false;
-//   }
-//   assignEventHandlers();
-// }
-// changeTableContent();
-/* FIN DE EXPERIMENTO */
-
-
-//Código a implementar (Cambio de tema)
-/* themeBtn.addEventListener('click', (event) => {
-  // Prevenir que se recargue la página
-  event.preventDefault();
-  console.log(body.style.backgroundColor);
-  if(body.style.backgroundColor === "black"){
-    //Cambier display a flex
-    body.style.backgroundColor = "white";
-    countDown.style.color = "black";
-    return;
-  }
-  else{
-    //Cambiar opacity de mensaje
-    body.style.backgroundColor = "black";
-    countDown.style.color = "white";
-    document.querySelector('.min-sec').setAttribute('style', 'border: 2px solid black;');
-    return;
-  }
-}); */
-
-// HTML
-/* 
-<!-- botón flotante de day / night -->
-<a class="theme-btn" href=""><img src="./imgs/sun.png" class="theme-btn-img"></a> 
-*/
-
-// CSS
-/* 
-.theme-btn {
-  position: fixed;
-  right: 1rem;
-  top: 1rem;
-  padding: 0.25rem;
-  height: 1rem;
-  border-radius: 1rem;
-  display: flex;
-  justify-content: center;
-  font-size: large;
-  background-color: white;
+function load_table_meeting(){
+  table.innerHTML = "";
+  const filter_meeting = data_meeting_json.filter((x) => {
+    return x.sesion == (check_meeting_day ? 'ministerio' : 'finde');
+  });
+  addrow({ "tema": "Tema / Asignación", "tiempo": "Min." }, 0, false);
+  filter_meeting.forEach((item_meeting, item_meeting_index) => {
+    addrow(item_meeting, item_meeting_index);
+  });
+  title.innerText = check_meeting_day ? 'Reunión de Entre Semana' : 'Reunión de Fin de Semana';
+  table.rows[1].style.backgroundColor = "black";
+  timeInput.value = filter_meeting[0].tiempo; 
+  countDown.innerHTML = filter_meeting[0].tiempo + ":00";
+  secondScreenText.innerText = filter_meeting[0].tiempo + ":00";
 }
-*/
+
 let isSharing = false;
 let stream;
 
@@ -494,13 +413,12 @@ document.getElementById('share-screen').addEventListener('click', function() {
   const secondCounter = newWindow.document.body.querySelector('.second-counter');
   const originalStyles = secondCounter.style.cssText;
 
-
-  console.log(originalStyles)
   if (!isSharing) {
     navigator.mediaDevices.getDisplayMedia({
       video: {
-        width: { ideal: 1920 },
-        height: { ideal: 1080 }
+        width:     { ideal: 1280 },
+        height:    { ideal: 720 },
+        frameRate: { ideal: 20 } // 20 fps
       }
     })
       .then(mediaStream => {
