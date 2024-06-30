@@ -39,7 +39,7 @@ table th, table td {
   scrollbar-width: thin;
   scrollbar-color: var(--scroll-bar-color) var(--scroll-bar-bg-color);*/
   justify-content: center;
-  border-right: 2px dashed rgb(255, 255, 255);
+  border-right: 2px solid rgb(255, 255, 255);
 }
 .counter{
   width: 65%;
