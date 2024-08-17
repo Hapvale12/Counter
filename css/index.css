@@ -34,10 +34,6 @@ table th, table td {
   display: flex;
   align-items: center;
   flex-direction: column;
-  /*overflow-y: scroll;
-  //overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: var(--scroll-bar-color) var(--scroll-bar-bg-color);*/
   justify-content: center;
   border-right: 2px solid rgb(255, 255, 255);
 }
@@ -46,10 +42,6 @@ table th, table td {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /*overflow-y: scroll;
-  overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: var(--scroll-bar-color) var(--scroll-bar-bg-color);*/
 }
 
 button:hover {

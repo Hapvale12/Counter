@@ -216,7 +216,7 @@ stopBtn.addEventListener('click', () => {
     // set a new setInterval()
     countDownInterval = setInterval(() => {
       setCountDown(endTime);
-    }, 0);
+    }, 1000);
   }
 });
 /* .stop-btn click listener ends */
@@ -253,7 +253,7 @@ form.addEventListener('submit', (event) => {
     setCountDown(endTime);
     countDownInterval = setInterval(() => {
       setCountDown(endTime);
-    }, 10);
+    }, 1000);
     // then disable the .set-btn
     setBtn.disabled = true;
     // then enable the .stop-btn
@@ -418,7 +418,7 @@ document.getElementById('share-screen').addEventListener('click', function() {
       video: {
         width:     { ideal: 1280 },
         height:    { ideal: 720 },
-        frameRate: { ideal: 20 } // 20 fps
+        frameRate: { ideal: 30 } // 20 fps
       }
     })
       .then(mediaStream => {
