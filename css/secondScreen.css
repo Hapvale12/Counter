@@ -8,11 +8,8 @@ body{
     font-family: 'Roboto', sans-serif;
 }
 .second-counter-container{
-    /* display: flex; */
     align-content: center;
     text-align: center;
-    /* justify-content: center; */
-    /* align-items: center; */
     height: 98vh;
     width: 98vw;
 }
@@ -21,6 +18,10 @@ body{
     padding: 1rem 3rem;
     border-radius: 1rem;
     font-size: 20rem;
+}
+#screen-video{
+    border-radius: 1rem;
+    border : 0.5rem solid black;
 }
 p{
     margin: 0;

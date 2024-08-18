@@ -1,37 +1,23 @@
 /* grab necessary elements */
-// grab the .form
-const form = document.querySelector('.form');
-// grab the .time-input
-const timeInput = document.querySelector('.time-input');
-// grab the select[name='format']
-const format = document.querySelector("select[name='format']");
-// grab the .set-btn
-const setBtn = document.querySelector('.set-btn');
-// grab the .countdown
-const countDown = document.querySelector('.countdown');
-// grab the .stop-btn 
-const stopBtn = document.querySelector('.stop-btn');
-// grab the .reset-btn
-const resetBtn = document.querySelector('.reset-btn');
-/* grab necessary elements ends */ 
+const form          = document.querySelector('.form');
+const timeInput     = document.querySelector('.time-input');
+const format        = document.querySelector("select[name='format']");
+const setBtn        = document.querySelector('.set-btn');
+const countDown     = document.querySelector('.countdown');
+const stopBtn       = document.querySelector('.stop-btn');
+const resetBtn      = document.querySelector('.reset-btn');
+const body          = document.querySelector('body');
+const table         = document.querySelector('.table');
+const toggleSwitch  = document.getElementById('toggleSwitch');
+const title         = document.getElementById('title_meeting');
+const show_message  = document.getElementById('show_message');
+let hideBtn         = document.querySelector('.hide-btn');
+let hideImg         = document.querySelector('.hide-btn-img');
+let tableDiv        = document.querySelector('.columns');
 
-// Recoger the body
-const body = document.querySelector('body');
-// Recoger la tabla de la página
-const table = document.querySelector('.table');
-// Recoger el interruptor
-const toggleSwitch = document.getElementById('toggleSwitch');
-// // Recoger la fila 1 de la tabla
-// table.rows[2].style.backgroundColor = "black";
+/* global variables and constants */
 // Estado del cronometro
 let running = false;
-// Recoger botón de hide/esconder columnas
-let hideBtn = document.querySelector('.hide-btn');
-//Recoger imagen de botón
-let hideImg = document.querySelector('.hide-btn-img');
-//Recoger div de tabla
-let tableDiv = document.querySelector('.columns');
-/* global variables and constants */
 // variable to store setInterval
 let countDownInterval;
 // secondsLeft in millisecond
@@ -40,15 +26,10 @@ let secondsLeftms;
 let endTime;
 // .stop-btn clicked or not
 let stopBtnClicked = false;
-
 // json data meetings
 let data_meeting_json = [];
-// Titulo de la reunión
-const title = document.getElementById('title_meeting');
 // Path del archivo Json con los meetings
 const path_json_data = "./json_data/meetings.json"
-// Botón para mostrar u ocultar el mensaje
-const show_message = document.getElementById('show_message');
 // Obteniendo el día (de 0 a 6) de la semana
 const day = new Date().getDay();
 // Verificar si el día es entre semana o fin de semana
@@ -74,7 +55,6 @@ window.addEventListener('load', async function() {
   load_table_meeting();
   // Evento para capturar el click en el Link [a]
   assignEventHandlers();
-  
   const filter_meeting = data_meeting_json.filter((x) => {
     return x.sesion == (check_meeting_day ? 'ministerio' : 'finde');
   });
@@ -86,12 +66,10 @@ window.addEventListener('load', async function() {
   countdownHTML = document.querySelector('.countdown').outerText;
   // Agrega el HTML del cronómetro a la nueva ventana
   newWindow.addEventListener('load', function() {
-  // Ahora puedes acceder a los elementos de la nueva ventana
-  secondScreenText = newWindow.document.body.querySelector('.second-counter');
-  secondScreenText.innerText = countdownHTML;
-  
+    // Ahora puedes acceder a los elementos de la nueva ventana
+    secondScreenText = newWindow.document.body.querySelector('.second-counter');
+    secondScreenText.innerText = countdownHTML;
   });
-  
 });
 
 
@@ -284,6 +262,8 @@ const setCountDown = (endTime) => {
 
   // set the .countdown text
   let timeString = `${minutes} : ${seconds}`;
+
+  // Change this
   if (secondsLeft < 0) {
     timeString = "-" + timeString;
     newWindow.document.body.style.backgroundColor = "red";
@@ -303,7 +283,7 @@ const setCountDown = (endTime) => {
   if (newWindow) {
     // Recoger el texto del segundo cronómetro
     const secondCounter = newWindow.document.body.querySelector('.second-counter')
-    secondCounter.innerHTML = countDown.outerHTML;
+    secondCounter.innerText = countDown.outerText;
     secondCounter.style.margin = "0";
     secondCounter.style.padding = "0";
   }
@@ -339,11 +319,17 @@ const resetCountDown = () => {
       let nxtRow = i + 1;
       // Cambiar el color de fondo de la fila actual a "darkgray"
       table.rows[i].style.backgroundColor = "darkgray";
-
-      if (nxtRow < 14) {
+      if (nxtRow < table.rows.length) {
         // Actualizar el color de fondo de la siguiente fila a "black"
         table.rows[nxtRow].style.backgroundColor = "black";
         let minute = table.rows[nxtRow].cells[1].innerHTML;
+        // Formatear y mostrar el tiempo
+        countDown.innerHTML = minute < 10 ? "0" + minute + ":00" : minute + ":00";
+        timeInput.value = minute;
+      }
+      else{
+        table.rows[1].style.backgroundColor = "black";
+        let minute = table.rows[1].cells[1].innerHTML;
         // Formatear y mostrar el tiempo
         countDown.innerHTML = minute < 10 ? "0" + minute + ":00" : minute + ":00";
         timeInput.value = minute;
@@ -392,7 +378,14 @@ function load_table_meeting(){
   const filter_meeting = data_meeting_json.filter((x) => {
     return x.sesion == (check_meeting_day ? 'ministerio' : 'finde');
   });
-  addrow({ "tema": "Tema / Asignación", "tiempo": "Min." }, 0, false);
+  addrow(
+    { 
+      "tema": "Tema / Asignación",
+      "tiempo": "Min." 
+    },
+    0,
+    false
+  );
   filter_meeting.forEach((item_meeting, item_meeting_index) => {
     addrow(item_meeting, item_meeting_index);
   });
@@ -418,7 +411,7 @@ document.getElementById('share-screen').addEventListener('click', function() {
       video: {
         width:     { ideal: 1280 },
         height:    { ideal: 720 },
-        frameRate: { ideal: 30 } // 20 fps
+        frameRate: { ideal: 60 } 
       }
     })
       .then(mediaStream => {
@@ -450,15 +443,15 @@ document.getElementById('share-screen').addEventListener('click', function() {
         console.error('Error al acceder a la pantalla', error);
       });
   } else {
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop());
-    }
-    isSharing = false;
-    video.hidden = true;
-    miniVideo.hidden = true;
-    miniVideo.style = "opacity: 0;"
-    img.src = "./imgs/share-screen.png";
-    secondCounter.style.cssText = "background-color: none";
-    this.style = "background-color: none;"
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+      isSharing = false;
+      video.hidden = true;
+      miniVideo.hidden = true;
+      miniVideo.style = "opacity: 0;"
+      img.src = "./imgs/share-screen.png";
+      secondCounter.style.cssText = "background-color: none";
+      this.style = "background-color: none;"
   }
 });
