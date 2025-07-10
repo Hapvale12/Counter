@@ -1,59 +1,63 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="css/index.css"/>
-  <title>Temporizador</title>
-</head>
-<body>
-  <div class="columns">
-    <div class="switch-box">
-      <label class="switch">
-        <input type="checkbox" id="toggleSwitch">
-        <span class="slider round"></span>
-      </label>
-    </div>
-    <div>
-      <p id="title_meeting"></p>
-    </div>
-    <table class="table" style="background-color: darkgray;">
-    </table>
-  </div>
-  <div class="counter">
-    
-    <!-- form -->
-    <form class="form">
-      <div class="input-container">
-        <!-- countdown time input field --><!---->
-        <input type="number" min="1" width="50%" class="time-input" placeholder="Ingrese tiempo">
-        <!-- options -->
-        <select name="format" class="min-sec" disabled>
-          <option value="minutes">Minutos</option>
-        </select>
-        <!-- submit button or set button -->
-        <button type="submit" class="set-btn">Iniciar</button>
-      </div>
 
-    </form>
-    <!-- countdown text -->
-    <p class="countdown">01 : 00</p>
-    <!-- buttons -->
-    <div class="buttons">
-      <button class="stop-btn" disabled style="opacity: 0.5;">Detener</button>
-      <button class="reset-btn" disabled style="opacity: 0.5;">Reiniciar</button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <title>Temporizador</title>
+</head>
+
+<body>
+    <div class="columns">
+        <div class="switch-box">
+            <label class="switch">
+                <input type="checkbox" id="toggleSwitch">
+                <span class="slider round"></span>
+            </label>
+        </div>
+        <div>
+            <p id="title_meeting"></p>
+        </div>
+        <table class="table" style="background-color: darkgray;">
+        </table>
     </div>
-    <!-- Mensajes a mostrar -->
-    <div class="message-text-container">
-      <!-- countdown time input field --><!---->
-      <input id="message-text" type="text" class="message-text" placeholder="Mensaje a mostrar">
-      <button id="show_message" class="show-message-btn">Mostrar</button>
+    <div class="counter">
+
+        <!-- form -->
+        <form class="form">
+            <div class="input-container">
+                <!-- countdown time input field --><!---->
+                <input type="number" min="1" width="50%" class="time-input" placeholder="Ingrese tiempo">
+                <!-- options -->
+                <select name="format" class="min-sec" disabled>
+                    <option value="minutes">Minutos</option>
+                </select>
+                <!-- submit button or set button -->
+                <button type="submit" class="set-btn">Iniciar</button>
+            </div>
+
+        </form>
+        <!-- countdown text -->
+        <p class="countdown">01 : 00</p>
+        <!-- buttons -->
+        <div class="buttons">
+            <button class="stop-btn" disabled style="opacity: 0.5;">Detener</button>
+            <button class="reset-btn" disabled style="opacity: 0.5;">Reiniciar</button>
+        </div>
+        <!-- Mensajes a mostrar -->
+        <div class="message-text-container">
+            <!-- countdown time input field --><!---->
+            <input id="message-text" type="text" class="message-text" placeholder="Mensaje a mostrar">
+            <button id="show_message" class="show-message-btn">Mostrar</button>
+        </div>
     </div>
-  </div>
-  <!-- botón flotante de ocultar / hide -->
-  <a class="hide-btn" href=""><img src="./imgs/view.png" class="hide-btn-img"></a>
-  <button id="share-screen"><img class="share-screen-img" src="./imgs/share-screen.png" alt="" height="50px" width="50px"></button>
-  <video id="mini-video" autoplay hidden></video>
-  <script type="text/javascript" src="js/script.js"></script>
+    <!-- botón flotante de ocultar / hide -->
+    <a class="hide-btn" href=""><img src="./imgs/view.png" class="hide-btn-img"></a>
+    <button id="share-screen"><img class="share-screen-img" src="./imgs/share-screen.png" alt="" height="50px"
+            width="50px"></button>
+    <video id="mini-video" autoplay hidden></video>
+    <script type="text/javascript" src="js/script.js"></script>
 </body>
+
 </html>
